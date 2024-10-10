@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-import config from "config"
+import dotenv from "dotenv";
 
+dotenv.config();
 export default function connectToDB() {
   mongoose
-    .connect(config.get("MONGO_URI"))
+    .connect(process.env.MONGO_URI)
     .then(() => console.log("Connected to the DB..."))
     .catch((err) => {
       console.error(err.message);
