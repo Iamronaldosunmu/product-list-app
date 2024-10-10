@@ -8,7 +8,7 @@ import app from "./startup/server.js";
 const port = process.env.PORT || 4000;
 
 import "express-async-errors";
-import "./controllers/user.js";
+import "./models/user.js";
 // Middleware functions
 app.use(express.json());
 app.use(cors());
