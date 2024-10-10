@@ -1,3 +1,4 @@
+import authMiddleware from "../middleware/auth.js";
 import error from "../middleware/error.js";
 import userRouter from "../routes/user.js";
 
