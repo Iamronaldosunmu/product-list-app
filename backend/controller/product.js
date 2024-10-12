@@ -16,6 +16,12 @@ export const getAllProducts = async (req, res) => {
   const nameQuery = req.query.name ? { name: new RegExp(req.query.name, "i") } : {};
   const categoryQuery = req.query.category ? { category: new RegExp(req.query.category, "i") } : {};
 
+  const sort = {};
+  if (req.query.sortBy === "price") {
+    sort.price = 1; // Ascending
+  } else if (req.query.sortBy === "timestamp") {
+    sort.createdAt = -1; // Descending
+  }
   // Retrieve products with pagination
   const products = await Product.find({
     ...nameQuery,
@@ -23,10 +29,7 @@ export const getAllProducts = async (req, res) => {
   })
     .limit(pageLimit)
     .skip((currentPage - 1) * pageLimit)
-    .sort({
-      price: req.query.sortBy === "price" ? 1 : 0,
-      createdAt: req.query.sortBy === "timestamp" ? -1 : 0,
-    });
+    .sort(sort);
 
   // Get pagination data
   const { totalItems, totalPages } = await getPaginationData(Product, { ...nameQuery, ...categoryQuery }, pageLimit);
@@ -43,7 +46,7 @@ export const getAllProducts = async (req, res) => {
 };
 
 // Get a single product by ID
-export const getAProduct = async (req, res) => {
+export const getProduct = async (req, res) => {
   const { id } = req.params;
 
   if (!isValidObjectId(id)) return res.status(400).json({ message: "This ID is not valid!" });
@@ -55,7 +58,7 @@ export const getAProduct = async (req, res) => {
 };
 
 // Create a new product
-export const createAProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   const { error } = validateProduct(req.body);
   if (error) return res.status(400).json({ message: error.details[0].message });
 
@@ -97,7 +100,7 @@ export const editProduct = async (req, res) => {
 };
 
 // Delete a product
-export const deleteAProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   if (!isValidObjectId(id)) return res.status(400).json({ message: "This ID is not valid!" });
