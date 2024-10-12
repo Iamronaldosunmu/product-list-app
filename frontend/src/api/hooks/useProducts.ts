@@ -4,6 +4,7 @@ import { createProduct, deleteProduct, fetchProducts, ProductData, updateProduct
 export const useProducts = (searchTerm?: string, category?: string) => {
   return useQuery<{products: ProductData[]}, Error>({
     queryKey: ['products', { name: searchTerm, category }],
+    // @ts-expect-error quick fix
     queryFn: fetchProducts,
   });
 };

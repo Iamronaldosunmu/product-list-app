@@ -6,6 +6,7 @@ export interface ProductData {
   price: number;
   category: string;
   image_url: string;
+  dateAdded: string 
 }
 
 export interface Product extends ProductData{

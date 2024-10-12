@@ -26,7 +26,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCart } from "@/context/CartContext"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 const CartButton = () => {
-    const { cartState, addItem, removeItem, clearCart, getTotalQuantity } = useCart();
+    const { cartState, removeItem, clearCart, getTotalQuantity } = useCart();
 
     return (
         <Sheet>

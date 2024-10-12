@@ -6,7 +6,8 @@ interface AuthContextType {
     setToken: (token: string | null) => void;
     logout: () => void;
     login: (token: string) => void;
-    isAuthenticated?: boolean
+    isAuthenticated?: boolean;
+    user?: User
 }
 
 interface User {

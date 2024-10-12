@@ -54,7 +54,7 @@ const Signup = () => {
 
     const onSubmit: SubmitHandler<UserSignupData> = (data) => {
         signup.mutate(data, {
-            onSuccess: (response) => {
+            onSuccess: () => {
                 navigate('/')
             },
         });

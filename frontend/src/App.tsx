@@ -1,18 +1,16 @@
+import { Toaster } from "@/components/ui/toaster";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { Route, Routes, useLocation } from "react-router-dom";
-import './App.css';
-import Login from './pages/Login';
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import EmptyPage from "./pages/EmptyPage";
-import Home from "./pages/Home";
-import ManageProducts from "./pages/ManageProducts";
 import queryClient from './api/queryClient';
-import { QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { Toaster } from "@/components/ui/toaster"
+import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import Login from './pages/Login';
+import ManageProducts from "./pages/ManageProducts";
+import Signup from "./pages/Signup";
 
 function App() {
   const location = useLocation();
