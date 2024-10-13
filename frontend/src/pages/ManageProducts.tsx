@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react"
+import { InboxIcon, MoreHorizontal } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -33,7 +33,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { useCreateProduct, useDeleteProduct, useProducts, useUpdateProduct } from "@/api/hooks/useProducts"
+import { useCreateProduct, useDeleteProduct, useProducts, useUpdateProduct, useUserProducts } from "@/api/hooks/useProducts"
 import { ProductData, Product as ProductType } from "@/api/productApi"
 import {
     Dialog,
@@ -53,6 +53,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { z } from "zod"
+import { motion } from 'framer-motion'
 
 const productFormSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters").max(100, "Name can't be more than 100 characters"),
@@ -428,7 +429,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 }
 
 const ManageProducts = () => {
-    const { data, isPending } = useProducts('', '');
+    const { data, isPending, isError } = useUserProducts();
     useEffect(() => {
         console.log(data)
     }, [data])
@@ -444,7 +445,8 @@ const ManageProducts = () => {
                 <AddProduct />
             </CardHeader>
             <CardContent>
-                <Table>
+                {/* @ts-expect-error quick fix */}
+                {!((!isPending && data?.products?.length == 0) || isError) && <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="hidden w-[100px] sm:table-cell">
@@ -465,9 +467,20 @@ const ManageProducts = () => {
                         }
                         {/* @ts-expect-error quick fix */}
                         {!isPending && data?.products?.map((product: ProductType) => <Product key={product._id} product={product} />)}
-
                     </TableBody>
-                </Table>
+                </Table>}
+                {/* @ts-expect-error quick fix */}
+                {((!isPending && data?.products?.length == 0) || isError) && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} key={'empty-state'} className="flex flex-col items-center justify-center h-[50vh] gap-6 mx-auto">
+                    <div className="flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full dark:bg-gray-800">
+                        <InboxIcon className="w-10 h-10 text-gray-500 dark:text-gray-400" />
+                    </div>
+                    <div className="space-y-2 text-center">
+                        <h2 className="text-2xl font-bold tracking-tight">No data to display</h2>
+                        <p className="text-gray-500 dark:text-gray-400">
+                            It looks like there's no data available yet. Try adding some new items.
+                        </p>
+                    </div>
+                </motion.div>}
             </CardContent>
         </Card>
     )

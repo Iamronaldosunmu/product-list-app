@@ -65,7 +65,13 @@ export const createProduct = async (req, res) => {
   const productExists = await Product.findOne({ name: req.body.name });
   if (productExists) return res.status(400).json({ message: "This product name already exists!" });
 
-  const product = new Product({ ...req.body });
+  const product = new Product({
+    ...req.body,
+    createdBy: req.user._id,
+  });
+
+  console.log(req.user);
+
   const result = await product.save();
 
   return res.status(201).json({
@@ -133,6 +139,34 @@ export const getProductsByCategory = async (req, res) => {
   const { totalItems, totalPages } = await getPaginationData(Product, { category: new RegExp(category, "i") }, pageLimit);
 
   if (!products.length) return res.status(404).json({ message: "No products found for this category!" });
+
+  return res.status(200).json({
+    products,
+    pagination: {
+      currentPage,
+      totalPages,
+      totalItems,
+      pageLimit,
+    },
+  });
+};
+
+export const getProductsByUser = async (req, res) => {
+  const pageLimit = parseInt(req.query.limit) || 20; 
+  const currentPage = parseInt(req.query.page) || 1;
+  const userId = req.user._id; 
+  console.log(req.user);
+
+  if (!isValidObjectId(userId)) return res.status(400).json({ message: "Invalid user ID!" });
+
+  const products = await Product.find({ createdBy: userId })
+    .limit(pageLimit)
+    .skip((currentPage - 1) * pageLimit)
+    .sort({ dateAdded: -1 });
+
+  const { totalItems, totalPages } = await getPaginationData(Product, { createdBy: userId }, pageLimit);
+
+  if (!products.length) return res.status(404).json({ message: "No products found for this user!" });
 
   return res.status(200).json({
     products,

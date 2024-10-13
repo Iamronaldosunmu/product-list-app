@@ -13,10 +13,6 @@ export interface Product extends ProductData{
   _id: string
 }
 
-// export const fetchProducts = async (): Promise<ProductData[]> => {
-//   const response = await apiClient.get<ProductData[]>('/products');
-//   return response.data;
-// };
 export const fetchProducts = async ({ queryKey }: any): Promise<ProductData[]> => {
   const [_key, { name, category }] = queryKey;
 
@@ -27,6 +23,11 @@ export const fetchProducts = async ({ queryKey }: any): Promise<ProductData[]> =
     },
   });
 
+  return response.data;
+};
+
+export const fetchProductsByUser = async (): Promise<ProductData[]> => {
+  const response = await apiClient.get(`/products/my-products`);
   return response.data;
 };
 

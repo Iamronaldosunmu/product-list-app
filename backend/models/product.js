@@ -1,6 +1,7 @@
 import Joi from "joi";
 import mongoose from "mongoose";
 
+
 export const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -33,6 +34,11 @@ export const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+    required: true,
+  }
 });
 
 export const validateProduct = (product) => {
