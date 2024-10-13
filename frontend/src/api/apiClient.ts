@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
+// @ts-expect-error
 const BASE_URL = import.meta.env.VITE_BASE_URL ;
 
 console.log(BASE_URL);
