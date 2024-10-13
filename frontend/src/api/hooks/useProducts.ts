@@ -22,23 +22,25 @@ export const useCreateProduct = () => {
 
 export const useUpdateProduct = (id: string) => {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
     mutationFn: (data: ProductData) => updateProduct(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['product', id] });
       queryClient.invalidateQueries({ queryKey: ['userProducts'] }); 
+      queryClient.invalidateQueries({ queryKey: ['product', id] });
+      queryClient.invalidateQueries({ queryKey: ['products'] }); 
     },
   });
 };
 
 export const useDeleteProduct = (id: string) => {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
     mutationFn: () => deleteProduct(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['userProducts'] }); 
+      queryClient.invalidateQueries({ queryKey: ['products'] }); // Updated to use object with queryKey property
     },
   });
 };
