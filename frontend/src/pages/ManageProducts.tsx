@@ -33,7 +33,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { useCreateProduct, useDeleteProduct, useProducts, useUpdateProduct, useUserProducts } from "@/api/hooks/useProducts"
+import { useCreateProduct, useDeleteProduct, useUpdateProduct, useUserProducts } from "@/api/hooks/useProducts"
 import { ProductData, Product as ProductType } from "@/api/productApi"
 import {
     Dialog,
@@ -48,12 +48,12 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Spinner } from "@/components/ui/spinner"
 import { useToast } from "@/hooks/use-toast"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { motion } from 'framer-motion'
 import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { z } from "zod"
-import { motion } from 'framer-motion'
 
 const productFormSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters").max(100, "Name can't be more than 100 characters"),
